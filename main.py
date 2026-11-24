@@ -35,18 +35,27 @@ CRITERIA = (
 )
 
 
+def score_drink(drink, criteria=CRITERIA):
+    """Total the judge's criterion scores for one drink."""
+    total = 0
+    for _name, first, second, first_score, second_score in criteria:
+        if first == drink:
+            total += first_score
+        elif second == drink:
+            total += second_score
+    return total
+
+
 def decide(criteria=CRITERIA):
     """Weigh coffee against tea on the judge's criteria.
 
     Returns "A" for coffee or "B" for tea.
     """
-    totals = {"coffee": 0, "tea": 0}
-    for _name, first, second, first_score, second_score in criteria:
-        totals[first] += first_score
-        totals[second] += second_score
+    coffee = score_drink("coffee", criteria)
+    tea = score_drink("tea", criteria)
     # Coffee 14, tea 8. Coffee wins on vividness and humour by a clear
     # margin and holds truth as the daily ritual -- so the letter is A.
-    if totals["coffee"] >= totals["tea"]:
+    if coffee >= tea:
         return "A"
     return "B"
 
