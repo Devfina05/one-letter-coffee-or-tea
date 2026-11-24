@@ -60,6 +60,17 @@ def decide(criteria=CRITERIA):
     return "B"
 
 
+def verify_entry(path):
+    """Check the written file holds exactly one non-whitespace letter."""
+    with open(path, "r", encoding="utf-8") as handle:
+        written = handle.read()
+    if len(written) != 1 or written.isspace():
+        print(f"entry.txt must hold exactly one letter, got {written!r}",
+              file=sys.stderr)
+        return False
+    return True
+
+
 def main():
     letter = decide()
     assert letter in ("A", "B") and len(letter) == 1
@@ -72,11 +83,7 @@ def main():
         handle.write(letter)
 
     # Self-check: the file must hold one non-whitespace character.
-    with open(path, "r", encoding="utf-8") as handle:
-        written = handle.read()
-    if len(written) != 1 or written.isspace():
-        print(f"entry.txt must hold exactly one letter, got {written!r}",
-              file=sys.stderr)
+    if not verify_entry(path):
         return 1
     return 0
 
